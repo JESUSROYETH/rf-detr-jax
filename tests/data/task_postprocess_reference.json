@@ -1,0 +1,33 @@
+{
+  "source_repository": "https://github.com/roboflow/rf-detr",
+  "source_revision": "6674d8581b7694baf567b993a4f32000a6f4f4c2",
+  "source_api": "rfdetr.models.postprocess.PostProcess",
+  "torch_version": "2.10.0+cu128",
+  "numpy_version": "2.5.2",
+  "device": "cpu",
+  "seed": 23,
+  "dtype": "float32",
+  "batch": 2,
+  "queries": 5,
+  "classes": 3,
+  "num_select": 7,
+  "num_keypoints_per_class": [
+    1,
+    3,
+    2
+  ],
+  "trace_alpha": 0.2,
+  "target_sizes": [
+    [
+      11,
+      19
+    ],
+    [
+      17,
+      9
+    ]
+  ],
+  "generation": "numpy.random.default_rng(23): logits=normal(2,5,3); boxes=uniform(.1,.9,(2,5,4)); masks=normal(2,5,3,4); points=normal(2,5,9,8), each cast to float32. PostProcess on detection+mask and detection+keypoint outputs; default trace_alpha=.2, original-size masks. NPZ stores inputs and every per-image output.",
+  "sha256": "f25da23d40a46cbcb80252d3bbef8fe47565c7387425db36a50fd33417f37912",
+  "contains": "Synthetic model output tensors, no trained weights or dataset images."
+}

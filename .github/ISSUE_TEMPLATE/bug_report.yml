@@ -1,0 +1,22 @@
+name: Bug report
+description: Report reproducible incorrect behavior.
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Observed and expected behavior
+      description: Include a minimal reproduction with synthetic data when possible.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Commit, Python, JAX/JAXlib, Flax, OS, hardware, precision and relevant flags.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant output
+      description: Remove credentials, private paths and sensitive data before sharing.

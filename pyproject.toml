@@ -1,0 +1,93 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rfdetr-jax"
+version = "0.1.0"
+description = "A trainable JAX/Flax port of RF-DETR (roboflow/rf-detr)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+keywords = ["object-detection", "jax", "flax", "rf-detr"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "flax>=0.10.0",
+    "jax>=0.5.0",
+    "numpy>=2.0.0",
+    "optax>=0.2.4",
+    "pillow>=10.0.0",
+    "opencv-python>=4.10.0.84",
+    "scipy>=1.13.0",
+    "pycocotools>=2.0.8",
+    "supervision>=0.29.0",
+    "torch>=2.10.0",
+    "requests>=2.32.5",
+    "tensorboard>=2.15.0",
+    "pyyaml>=6.0.1",
+]
+
+[project.optional-dependencies]
+cuda12 = ["jax[cuda12]>=0.5.0"]
+tpu = ["jax[tpu]>=0.5.0"]
+# Rust COCO evaluator, used automatically when installed (see evaluation.coco_eval.resolve_backend).
+fast-eval = ["hotcoco>=1.0.1"]
+dev = ["pytest>=8.0.0", "ruff>=0.9.0", "build>=1.2.0"]
+reference = ["torch>=2.10.0", "torchvision>=0.25.0", "faster-coco-eval>=1.7.2"]
+# Training dependencies are included in the base distribution. Preserve the
+# upstream install spelling so switching distributions does not drop training.
+train = []
+# Export reconstructs a separate CPU model from JAX parameters. This published
+# upstream version passed the three-task ONNX and local bundle parity tests.
+onnx = ["rfdetr[onnx]==1.11.2", "torch>=2.10.0,<2.11", "torchvision>=0.25,<0.26"]
+export = ["rfdetr[onnx]==1.11.2", "torch>=2.10.0,<2.11", "torchvision>=0.25,<0.26"]
+
+[project.urls]
+Repository = "https://github.com/JESUSROYETH/rf-detr-jax"
+Issues = "https://github.com/JESUSROYETH/rf-detr-jax/issues"
+
+[project.scripts]
+rfdetr-jax-train = "rfdetr_jax.cli:train"
+rfdetr-jax-convert = "rfdetr_jax.cli:convert"
+rfdetr-jax-eval = "rfdetr_jax.cli:evaluate"
+rfdetr-jax-predict = "rfdetr_jax.inference:main"
+
+# Also apply without Git metadata when rebuilding an extracted source distribution.
+[tool.hatch.build]
+exclude = [
+    "**/artifacts/**", "**/weights/**", "**/upstream/**", "**/.venv*/**",
+    "**/.jax_cache*/**", "**/__pycache__/**", "**/.env*", "**/*.pem", "**/*.key", "/data/**", "/runs/**",
+    "/docs/*-measurements/**", "/docs/tpu.md", "/docs/gpu.md",
+    "/docs/comparison.md", "/scripts/tpu.local.sh",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rfdetr_jax"]
+
+[tool.hatch.build.targets.sdist]
+include = ["/src", "/tests", "/scripts", "/docs", "/.github", "/*.md", "/LICENSE", "/NOTICE", "/Makefile", "/pyproject.toml", "/.gitignore"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
+pythonpath = ["src"]
+# Training tests write full checkpoints; keep only failing tests' temporary directories so a
+# CI runner's disk is not exhausted.
+tmp_path_retention_policy = "failed"
+tmp_path_retention_count = 1
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]

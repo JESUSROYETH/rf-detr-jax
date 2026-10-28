@@ -1,0 +1,30 @@
+upstream/
+.venv*/
+__pycache__/
+*.pyc
+runs/
+weights/
+/data/
+artifacts/
+scripts/tpu.local.sh
+.jax_cache/
+.jax_cache_tpu/
+.pytest_cache/
+.ruff_cache/
+.DS_Store
+
+# Build outputs and local secrets
+/dist/
+/build/
+*.egg-info/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Internal experiment reports and records
+/docs/*-measurements/
+/docs/tpu.md
+/docs/gpu.md
+/docs/comparison.md
